@@ -7,35 +7,35 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 public class Main{
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
+        HashMap<String, String> enterPeople = new HashMap<>();
+
         int num = Integer.parseInt(br.readLine());
-        ArrayList<String> enterPeople = new ArrayList<>();
 
-        HashMap<String, String> hm = new HashMap<>();
         for(int i = 0; i < num; i++){
-            String[] str = br.readLine().split(" ");
-            hm.put(str[0], str[1]);
-        }
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            String name = st.nextToken();
+            String log = st.nextToken();
 
-        Set<Map.Entry<String, String>> entrySet = hm.entrySet();
-        Iterator<Map.Entry<String, String>> itr = entrySet.iterator();
-
-        while (itr.hasNext()) {
-            Map.Entry<String, String> eachEntry = itr.next();
-            if (eachEntry.getValue().equals("enter")){
-                enterPeople.add(eachEntry.getKey());
+            if (!enterPeople.containsKey(name)){ //HashMap에 해당 사람이 없으면(enter을 안했으면) put
+                enterPeople.put(name, log);
+            }
+            else { //HashMap에 해당 사람이 있으면(enter을 했으면) remove
+                enterPeople.remove(name);
             }
         }
 
-        Collections.sort(enterPeople, Collections.reverseOrder());
+        ArrayList<String> result = new ArrayList<>(enterPeople.keySet());
+        Collections.sort(result, Collections.reverseOrder());
 
         br.close();
-        for(String s : enterPeople){
+        for(String s : result){
             sb.append(s).append("\n");
         }
         System.out.println(sb);
