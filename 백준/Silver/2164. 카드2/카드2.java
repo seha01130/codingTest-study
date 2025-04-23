@@ -14,13 +14,8 @@ public class Main {
         }
 
         while (list.size() > 1){
-            for (int i = 0; i < 2; i++){
-                if (i == 0){
-                    list.remove();
-                } else {
-                    list.add(list.remove());
-                }
-            }
+            list.removeFirst();
+            list.addLast(list.removeFirst());
         }
 
         sb.append(list.get(0));
