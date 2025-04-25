@@ -5,22 +5,24 @@ import java.util.Stack;
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        // StringBuilder sb = new StringBuilder();
+
         int N = Integer.parseInt(br.readLine());
         int count = 0;
 
-        for (int i = 0; i < N; i++) {
-            String word = br.readLine();
+        for (int i = 0; i < N; i++){
+            char[] array = br.readLine().toCharArray();
             Stack<Character> stack = new Stack<>();
 
-            for (char ch : word.toCharArray()) {
-                if (!stack.isEmpty() && stack.peek() == ch) {
-                    stack.pop();  // 짝을 이뤘으면 제거
-                } else {
-                    stack.push(ch);  // 새 문자 넣기
+            for (char ch : array){
+                if (!stack.isEmpty() && stack.peek() == ch){
+                    stack.pop();
+                } else{
+                    stack.push(ch);
                 }
             }
 
-            if (stack.isEmpty()) {
+            if (stack.isEmpty()){
                 count++;
             }
         }
