@@ -1,28 +1,28 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
         int count = 0;
 
-        for (int i = 0; i < N; i++){
+        for (int i = 0; i < N; i++) {
             char[] array = br.readLine().toCharArray();
-            Stack<Character> stack = new Stack<>();
+            Deque<Character> deque = new ArrayDeque<>(); // Deque 사용
 
-            for (char ch : array){
-                if (!stack.isEmpty() && stack.peek() == ch){
-                    stack.pop();
-                } else{
-                    stack.push(ch);
+            for (char ch : array) {
+                if (!deque.isEmpty() && deque.peekLast() == ch) {  // 맨 뒤 요소와 현재가 같으면 pop
+                    deque.removeLast();
+                } else {
+                    deque.addLast(ch);  // 맨 뒤에 push
                 }
             }
 
-            if (stack.isEmpty()){
+            if (deque.isEmpty()) {
                 count++;
             }
         }
