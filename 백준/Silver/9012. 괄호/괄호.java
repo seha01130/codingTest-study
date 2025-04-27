@@ -18,25 +18,22 @@ public class Main {
 
         int T = Integer.parseInt(br.readLine());
         String str;
-        char[] array;
 
         for (int i = 0; i < T; i++){
             str = br.readLine();
-            array = str.toCharArray();
 
-            for (int j = 0; j < array.length; j++){
-                if (deque.isEmpty() || deque.peekLast() == array[j]){
-                    deque.addLast(array[j]);
-                } else if (deque.peekLast().equals('(') && deque.peekLast() != array[j]) {
+            for (int j = 0; j < str.length(); j++){
+                if (str.charAt(j) == '('){
+                    deque.addLast(str.charAt(j));
+                } else if (deque.isEmpty() && str.charAt(j) == ')'){
+                    deque.addLast(str.charAt(j));
+                    break;
+                } else {
                     deque.removeLast();
                 }
             }
 
-            if (deque.isEmpty()){
-                sb.append("YES");
-            } else {
-                sb.append("NO");
-            }
+            sb.append(deque.isEmpty() ? "YES" : "NO");
             deque.clear();
 
             if (i < T - 1){
