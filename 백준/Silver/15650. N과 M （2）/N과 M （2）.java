@@ -12,15 +12,15 @@ public class Main {
         int M = Integer.parseInt(st.nextToken());
 
         int[] result = new int[M];
-        int flagNum = 0;
+        int flagNum = 1;
         int depth = 0;
 
-        backtrack(N, M, depth, result, flagNum);
+        dfs(N, M, depth, result, flagNum);
 
         System.out.println(sb);
     }
 
-    public static void backtrack(int N, int M, int depth, int[] result, int flagNum){
+    public static void dfs(int N, int M, int depth, int[] result, int flagNum){
         // result가 다 찼으면 출력
         if (depth == M) {
             for (int i = 0; i < M; i++){
@@ -32,13 +32,13 @@ public class Main {
             return;
         }
 
-        for (int i = 1; i <= N; i++){
-            if (i > flagNum){
+        for (int i = flagNum; i <= N; i++){
+            // if (i >= flagNum){
                 result[depth] = i;
                 flagNum = i;
-                backtrack(N, M, depth + 1, result, flagNum);
+                dfs(N, M, depth + 1, result, flagNum + 1);
                 // flagNum = result[depth]
-            }
+            // }
         }
     }
 }
