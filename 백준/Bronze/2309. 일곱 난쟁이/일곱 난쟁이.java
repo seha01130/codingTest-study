@@ -1,49 +1,37 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
     static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
 
         int[] arr = new int[9];
+        int sum = 0;
         for (int i = 0; i < 9; i++){
             arr[i] = Integer.parseInt(br.readLine());
+            sum += arr[i];
         }
 
-        int[] result = new int[7];
-        sub(arr, result, 0, 0);
+        boolean flag = false;
+        for (int i = 0; i < 8 && !flag; i++){
+            for (int j = i + 1; j < 9; j++){
+                if (sum - arr[i] - arr[j] == 100){
+                    flag = true;
+                    
+                    arr[i] = 0;
+                    arr[j] = 0;
 
-        System.out.println(sb);
-
-    }
-
-    public static boolean sub(int[] arr, int[] result, int depth, int idx) {
-        if (depth == 7){
-            int sum = 0;
-            for (int i = 0; i < result.length; i++){
-                sum += result[i];
-            }
-            if (sum == 100){
-                Arrays.sort(result);
-                for (int i = 0; i < 7; i++){
-                    sb.append(result[i] + "\n");
+                    Arrays.sort(arr);
+                    break;
                 }
-                return true;
-            } else {
-                return false;
             }
         }
 
-        for (int i = idx; i < arr.length; i++){
-            result[depth] = arr[i];
-            if (sub(arr, result, depth + 1, i + 1)) {
-                return true; // 하위 호출에서 조건 만족 → 상위에서도 종료
-            }
+        for (int i = 2; i < 9; i++){
+            System.out.println(arr[i]);
         }
-        return false;
+
     }
 }
