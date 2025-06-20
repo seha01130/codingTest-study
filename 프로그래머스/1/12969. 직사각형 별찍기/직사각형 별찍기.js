@@ -5,13 +5,16 @@ process.stdin.on('data', data => {
     // console.log(a);
     // console.log(b);
     
-    let result = "";
-    for (let i = 0; i < b; i++) {
-        for(let j = 0; j < a; j++){
-            result += "*";
-        }
-        result += "\n";
-    }
-    console.log(result);
-    // return result;
+    // let result = "";
+    // for (let i = 0; i < b; i++) {
+    //     for(let j = 0; j < a; j++){
+    //         result += "*";
+    //     }
+    //     result += "\n";
+    // }
+    // console.log(result);
+    
+    
+    let row = `${'*'.repeat(a)}`+"\n";
+    console.log(row.repeat(b));
 });
