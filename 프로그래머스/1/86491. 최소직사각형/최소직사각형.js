@@ -4,25 +4,20 @@
 */
 
 function solution(sizes) {
-    // [큰숫자. 작은숫자] 순으로 재정렬
-    for (let i = 0; i < sizes.length; i++){
-        let pair = sizes[i];
-        if (pair[0] < pair[1]){
-            let tmp = pair[0];
-            pair[0] = pair[1];
-            pair[1] = tmp;
-        }
-    }
-    console.log(sizes);
+    // [큰숫자, 작은숫자] 순으로 재정렬
+    let sorted = sizes.map(([w, h]) => w < h ? [h, w] : [w, h]);
+    
+    console.log(sorted);
     // 큰숫자중에가장큰숫자 * 작은숫자중에가장큰숫자
-    let aBig = 0, bBig = 0;
-    for (let [a, b] of sizes){
-        if (a > aBig){
-            aBig = a;
+    let max = [0, 0];
+    sorted.forEach(([w, h]) => {
+        if (max[0] < w){
+            max[0] = w;
         }
-        if (b > bBig){
-            bBig = b;
+        if (max[1] < h){
+            max[1] = h;
         }
-    }
-    return aBig * bBig;
+    });
+    
+    return max[0] * max[1];
 }
