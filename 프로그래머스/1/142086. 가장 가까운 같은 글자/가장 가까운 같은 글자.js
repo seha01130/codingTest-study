@@ -3,21 +3,29 @@ Map에다가 [알파벳, 나온 index] 를 갱신해야할듯. 이미 나온적�
 */
 
 function solution(s) {
-    let result = [];
+    const obj = {};
     
-    let map = new Map();
+    return [...s].map((e, i) => {
+        let result = obj[e] !== undefined ? i - obj[e] : -1;
+        obj[e] = i;
+        return result;
+    })
+
+//     let result = [];
     
-    [...s].forEach((e, i) => {
-        if (map.get(e) !== undefined) {
-            result.push(i - map.get(e));
-            map.set(e, i);
-            console.log("있");
-        } else {
-            result.push(-1);
-            map.set(e, i);
-            console.log("없");
-        }
-    });
+//     let map = new Map();
     
-    return result;
+//     [...s].forEach((e, i) => {
+//         if (map.get(e) !== undefined) {
+//             result.push(i - map.get(e));
+//             map.set(e, i);
+//             console.log("있");
+//         } else {
+//             result.push(-1);
+//             map.set(e, i);
+//             console.log("없");
+//         }
+//     });
+    
+//     return result;
 }
