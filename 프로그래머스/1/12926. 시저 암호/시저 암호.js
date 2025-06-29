@@ -23,13 +23,4 @@ function solution(s, n) {
         }
         return result;
     }).join(' ');
-    
-//     for (let i = 0; i < s.length; i++){
-//         if (s[i] )
-//         let code = s.charCodeAt(i) + n;
-//         answer += String.fromCharCode(code);
-//     }
-//     console.log('Z'.charCodeAt(0));
-    
-//     return answer;
 }
