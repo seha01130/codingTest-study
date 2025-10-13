@@ -35,10 +35,9 @@ public class Main{
 
         Collections.sort(result);
 
-        sb.append(result.size());
-        sb.append("\n");
+        sb.append(result.size()).append("\n");
         for(String s : result){
-            sb.append(s + "\n");
+            sb.append(s).append("\n");
         }
 
         System.out.println(sb);
