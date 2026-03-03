@@ -1,16 +1,18 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
@@ -19,47 +21,44 @@ public class Main {
         int M = Integer.parseInt(st.nextToken());
 
         ArrayList<Integer>[] graph = new ArrayList[N+1];
-
         for (int i = 1; i <= N; i++){
             graph[i] = new ArrayList<>();
         }
-       
+
         for (int i = 0; i < M; i++){
             st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
-            graph[start].add(end);
-            graph[end].add(start);
+            graph[a].add(b);
+            graph[b].add(a);
         }
-        // ----------- 간선 저장 끝
 
+        Stack<Integer> stack = new Stack<>();
         boolean[] visited = new boolean[N+1];
-
         int count = 0;
 
         for (int i = 1; i <= N; i++){
-            if (!visited[i]){
-                count++;
-                dfs(i, graph, visited);
+            if (visited[i]){
+                continue;
+            }
+
+            stack.push(i);
+            visited[i] = true;
+            count++;
+
+            while (!stack.isEmpty()){
+                int node = stack.pop();
+                for (int n : graph[node]){
+                    if (!visited[n]){
+                        stack.push(n);
+                        visited[n] = true;
+                    }
+                }
             }
         }
-        
 
         sb.append(count);
-        System.out.print(sb);
-    }
-
-    private static void dfs(int node, ArrayList<Integer>[] graph, boolean[] visited) {
-        visited[node] = true;
-
-        for(int dest: graph[node]){
-            if (!visited[dest]){
-                dfs(dest, graph, visited);
-            }
-        }
-
-        return;
+        System.out.println(sb);
     }
 }
-
