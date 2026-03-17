@@ -36,11 +36,11 @@ public class Main {
         int[] dr = new int[] {0, 1, 0, -1};
         int [] dc = new int[] {1, 0, -1, 0};
 
-        sb.append(dfs(graph, 0, 0, dr, dc, N-1, M-1));
+        sb.append(bfs(graph, 0, 0, dr, dc, N-1, M-1));
         System.out.println(sb);
     }
 
-    private static int dfs(int[][] graph, int startR, int startC, int[] dr, int[] dc, int finishR, int finishC) {
+    private static int bfs(int[][] graph, int startR, int startC, int[] dr, int[] dc, int finishR, int finishC) {
         Queue<int[]> queue = new LinkedList<>();
         int count = 1;
         queue.offer(new int[] {startR, startC, count});
