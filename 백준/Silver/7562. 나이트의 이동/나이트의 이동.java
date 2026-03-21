@@ -21,7 +21,6 @@ public class Main {
         int T = Integer.parseInt(br.readLine());
         while(T-- > 0){
             int I = Integer.parseInt(br.readLine());
-            int[][] graph = new int[I][I];
             boolean[][] visited = new boolean[I][I];
             
             String[] current = br.readLine().split(" ");
@@ -35,13 +34,13 @@ public class Main {
             int[] dr = {-2, -1, 1, 2, 2, 1, -1, -2};
             int[] dc = {1, 2, 2, 1, -1, -2, -2, -1};
 
-            sb.append(bfs(graph, visited, curR, curC, targetR, targetC, dr, dc, I)).append("\n");
+            sb.append(bfs(visited, curR, curC, targetR, targetC, dr, dc, I)).append("\n");
         }
         
         System.out.println(sb);
     }
 
-    private static int bfs(int[][] graph, boolean[][] visited, int curR, int curC, int targetR, int targetC, int[] dr, int[]dc, int I) {
+    private static int bfs(boolean[][] visited, int curR, int curC, int targetR, int targetC, int[] dr, int[]dc, int I) {
         Queue<int[]> queue = new LinkedList<>();
         int count = 0;
 
