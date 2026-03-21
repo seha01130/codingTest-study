@@ -1,0 +1,11 @@
+SELECT ID, (CASE
+                WHEN TILE = 1 THEN 'CRITICAL'
+                WHEN TILE = 2 THEN 'HIGH'
+                WHEN TILE = 3 THEN 'MEDIUM'
+                ELSE 'LOW'
+            END) AS COLONY_NAME
+FROM (SELECT ID,
+             NTILE(4) OVER (ORDER BY SIZE_OF_COLONY DESC) AS TILE
+     FROM ECOLI_DATA
+     ) AS T
+ORDER BY ID;
