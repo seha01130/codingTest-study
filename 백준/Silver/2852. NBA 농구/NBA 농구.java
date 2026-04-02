@@ -5,8 +5,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -15,83 +19,53 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int N = Integer.parseInt(br.readLine());
-
-        int[][] timeLine = new int[N][2];
-        StringTokenizer st;
-        // 팀 별 득점한 시간 저장(초 수로 저장)
-        for (int i = 0; i < N; i++) {
-            String str = br.readLine();
-            st = new StringTokenizer(str);
-            int team = Integer.parseInt(st.nextToken());
-            String time = st.nextToken();
-            int minute = Integer.parseInt(time.split(":")[0]);
-            int second = Integer.parseInt(time.split(":")[1]);
-
-            timeLine[i][0] = team;
-            timeLine[i][1] = minute*60 + second;
-        }
-
-        // System.out.println(Arrays.deepToString(timeLine));
-
+        int T = Integer.parseInt(br.readLine());
+        Map<Integer, Integer> winningTime = new HashMap<>();
+        winningTime.put(1, 0);
+        winningTime.put(2, 0);
         int[] score = new int[3];
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        hm.put(1,0);
-        hm.put(2, 0);
 
-        for (int i = 0; i < N; i++){
-            int team = timeLine[i][0];
+        int lastTime = 0;
+        for (int i = 0; i < T; i++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int team = Integer.parseInt(st.nextToken());
+
+            String[] timeArr = st.nextToken().split(":");
+            int minute = Integer.parseInt(timeArr[0]);
+            int second = Integer.parseInt(timeArr[1]);
+            int time = minute*60 + second;
+            // System.out.println(time);
+
+            
+            if (score[1] > score[2]) winningTime.put(1, winningTime.get(1) + (time - lastTime));
+            else if (score[1] < score[2]) winningTime.put(2, winningTime.get(2) + (time - lastTime));
+
             score[team]++;
-
-            // 동점이면 pass
-            if (score[1] == score[2]){
-                continue;
-            }
-
-            int winningTeam = score[1] > score[2] ? 1 : 2;
-
-            int curTime;
-            if (i == N-1){
-                curTime = 48*60 - timeLine[i][1];
-                hm.put(winningTeam, hm.getOrDefault(winningTeam, 0) + curTime);
-                break;
-            }
-
-            curTime = timeLine[i+1][1] - timeLine[i][1];
-            hm.put(winningTeam, hm.getOrDefault(winningTeam, 0) + curTime);
+            lastTime = time;
         }
-        // System.out.println(hm);
 
-        // 정렬
-        ArrayList<Map.Entry<Integer, Integer>> list = new ArrayList<>(hm.entrySet());
-        list.sort((a,b) -> a.getKey().compareTo(b.getKey()));
+        if (score[1] > score[2]) winningTime.put(1, winningTime.get(1) + (48*60 - lastTime));
+        else if (score[1] < score[2]) winningTime.put(2, winningTime.get(2) + (48*60 - lastTime));
 
-        for (Map.Entry<Integer, Integer> entry: list){
-            int time = entry.getValue();
-            int minute = time / 60;
-            String minuteStr = String.valueOf(minute);
-            if (minute < 10) {
-                minuteStr = "0" + minuteStr;
-            }
-            int second = time % 60;
-            String secondStr = String.valueOf(second);
-            if (second < 10){
-                secondStr = "0" + secondStr;
-            }
+        int team1 = winningTime.get(1);
+        int team2 = winningTime.get(2);
 
-            sb.append(minuteStr).append(":").append(secondStr).append("\n");
-        }
-        
+        int minute1 = team1/60;
+        int second1 = team1%60;
+        int minute2 = team2/60;
+        int second2 = team2%60;
+
+        String team1Time = String.format("%02d:%02d", minute1, second1);
+        String team2Time = String.format("%02d:%02d", minute2, second2);
+
+
+        sb.append(team1Time).append("\n").append(team2Time);
         System.out.println(sb);
     }
 }
 
 /*
-N번 반복
-경기시간은 48:00
+골 넣었을 때 어느 팀이 이기게 됐는지 판별. 그리고 그 때부터 다음 골 넣은 시간동안 이긴시간에 추가.
 
-현재 팀 별 점수를 기록하는 arr가 있어야함 score[2]
-골 넣었을 때 이기고있는 팀에다가 시간 계산(다음골넣은시간 - 현재시간)해서 더해줌.
-골 넣었을 때 동점이면 걍 continue;
-마지막은 (45분 - 현재 시간) 더해줌
+그러려면 각 팀 별 몇점인지 기록해야하고, 각 팀 별 누직 시간 기록
 */
