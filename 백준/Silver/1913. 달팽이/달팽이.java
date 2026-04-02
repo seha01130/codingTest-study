@@ -5,8 +5,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -16,59 +20,57 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
-        int targetNum = Integer.parseInt(br.readLine());
-        
+        int target = Integer.parseInt(br.readLine());
+
         int[][] arr = new int[N][N];
-        int[] dr = {1, 0, -1, 0}; //directionRow
-        int[] dc = {0, 1, 0, -1}; //directionCol
+        int currentR = N/2;
+        int currentC = N/2;
+        arr[currentR][currentC] = 1;
+        int num = 2;
 
-        int num = N*N;
-
-        int cr = 0; //currentRow
-        int cc = 0; //currentCol
-        int dir = 0;
+        int[] dr = {0, 1, 0, -1};
+        int[] dc = {1, 0, -1, 0};
         
-        while (num > 0){
-            if(targetNum == num){
-                sb.append(cr+1).append(" ").append(cc+1);
+        // target 숫자가 1일때도 고려하여 초기화
+        int targetR = currentR + 1;
+        int targetC = currentC + 1;
+        for (int i = 0; i < N/2; i++){
+            currentR = currentR-1;
+            currentC = currentC-1;
+
+            for (int k = 0; k < 4; k++){
+                for (int j = 0; j < 2 * (i+1); j++){
+                    arr[currentR+dr[k]][currentC+dc[k]] = num;
+                    currentR = currentR+dr[k];
+                    currentC = currentC+dc[k];
+
+                    if (num == target){
+                        targetR = currentR + 1;
+                        targetC = currentC + 1;
+                    }
+                    num++;
+                }
             }
-
-            arr[cr][cc] = num--;
-            
-            int nr = cr + dr[dir]; //nextRow
-            int nc = cc + dc[dir]; //nextCol
-
-            // 방향전환
-            if (nr < 0 || nr > N-1 || nc < 0 || nc > N-1 || arr[nr][nc] != 0){
-                dir = (dir + 1) % 4;
-                nr = cr + dr[dir];
-                nc = cc + dc[dir];
-            }
-
-            cr = nr;
-            cc = nc;
         }
-
+        // System.out.println(Arrays.deepToString(arr));
         for (int i = 0; i < N; i++){
             for (int j = 0; j < N; j++){
-                System.out.print(arr[i][j] + " ");
+                sb.append(arr[i][j]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+
+        sb.append(targetR).append(" ").append(targetC);
         
         System.out.println(sb);
     }
 }
 
 /*
-N*N 개의 이차원 배열 만들고
-[0][0] 부터 시작 -> N*N 수 부터 시작하면서 최종 1일때까지 -- 해나갈건데
-아래 -> 오른쪽 -> 위 -> 왼쪽  방향순으로 반복
-    아래: index가 row는 +1, col은 그대로   -> 변화값: 1 0
-    오른쪽: index가 row는 그대로, col은 +1  -> 변화값: 0 1
-    위: index가 row는 -1, col은 그대로     -> 변화값: -1 0
-    왼쪽: index가 row는 그대로, col은 -1    -> 변화값: 0 -1
-index가 0보다 작거나 N보다 크거나 값이0이 아니면 방향 전환
+오른쪽 -> 아래 -> 왼쪽 -> 위  방향으로 숫자 채워넣음
+처음에는 2칸씩 연속으로 채워넣고 그다음은 4칸씩. 2의 배수씩 연속으로 채워넣는다.
 
-주어진 자연수 마주치면 좌표 저장
+1은 (N/2, N/2) 좌표
+빙글 도는 시작은 위 좌표에서 한 칸 위로 올라간 좌표에서 시작.
+-> 배열처럼 부터 시작한다고 가정하자. 나중에 좌표 위치 출력할때 +1 해서 출력하면 됨.
 */
